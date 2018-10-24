@@ -1,0 +1,10 @@
+spring:
+  sleuth:
+    web:
+      skip-pattern: /*.ico|/*.js
+    sampler:
+      probability: 1
+server:
+  port: 8080
+logging:
+  config: classpath:config/logback.xml

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="APP_Name" source="spring.application.name"/>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/>
+    <contextName>${APP_Name}</contextName>
+    <property name="charset" value="UTF-8"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${charset}</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/data/app/${APP_Name}/logs/${APP_Name}.logFile.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/data/app/${APP_Name}/logs/${APP_Name}.logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${charset}</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.my" level="INFO"/>
+
+    <!--</logger>-->
+    <root level="INFO">
+         <appender-ref ref="STDOUT" />
+         <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="FILE-JSON"/>-->
+    </root>
+</configuration>
